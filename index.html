@@ -1,1 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Unduhan</title>
+    <style>
+        /* Mengatur latar belakang gelap agar efek cahaya (glow) terlihat jelas */
+        body {
+            background-color: #0d0d0d;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        /* Teks 1: Terimakasih (Warna Glow Pink/Magenta) */
+        .text-thankyou {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 40px #ff00ff;
+            margin-bottom: 25px;
+        }
+
+        /* Teks 2: Loading (Warna Glow Cyan/Biru Muda) */
+        .text-loading {
+            font-size: 1.5em;
+            color: #fff;
+            text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff;
+            margin-bottom: 25px;
+        }
+
+        /* Teks 3: Tutorial (Warna Glow Hijau) */
+        .text-tutorial {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 40px #00ff00;
+            opacity: 0; /* Teks disembunyikan di awal, akan muncul setelah 100% */
+            transition: opacity 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="text-thankyou">Terimakasih sudah membeli💸</div>
+    
+    <div class="text-loading">Harap menunggu, loading sampai <span id="progress">0</span>%</div>
+    
+    <div class="text-tutorial" id="tutorialText">File terdownload silahkan lihat video Tutorialnya</div>
+
+    <script type="module">
+        // Amlol KRT dUri aakakkkks  
+        import { downloadUrl } from './Ueheudhdjshw.js';
+
+        // Konfigurasi Waktu (5 detik = 5000 milidetik)
+        const totalWaktu = 5000;
+        const targetPersen = 100;
+        const intervalWaktu = totalWaktu / targetPersen; // Naik 1% setiap 50 milidetik
+        
+        let persenSaatIni = 0;
+        const progressElement = document.getElementById('progress');
+        const tutorialTextElement = document.getElementById('tutorialText');
+
+        // Logika Loading
+        const loadingInterval = setInterval(() => {
+            persenSaatIni++;
+            progressElement.innerText = persenSaatIni;
+
+            // Jika sudah mencapai 100%
+            if (persenSaatIni >= targetPersen) {
+                clearInterval(loadingInterval); // Hentikan perhitungan
+                
+                // Menampilkan teks ketiga setelah loading selesai
+                tutorialTextElement.style.opacity = 1;
+                
+                // Memulai proses unduh otomatis menggunakan variabel yang diimport
+                window.location.href = downloadUrl;
+            }
+        }, intervalWaktu);
+    </script>
+</body>
+</html>
 
