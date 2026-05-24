@@ -5,81 +5,141 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Halaman Unduhan</title>
     <style>
-        /* Mengatur latar belakang gelap agar efek cahaya (glow) terlihat jelas */
+        /* Mengatur latar belakang dengan efek animasi grid bergerak */
         body {
-            background-color: #0d0d0d;
+            background-color: #080810;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            animation: moveGrid 20s linear infinite;
             color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            text-align: center;
             overflow: hidden;
         }
 
-        /* Teks 1: Terimakasih (Warna Glow Pink/Magenta) */
+        @keyframes moveGrid {
+            from { background-position: 0 0; }
+            to { background-position: 0 1000px; }
+        }
+
+        /* Wadah Utama dengan gaya Glassmorphism */
+        .container {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 40px 50px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        /* Teks 1: Terimakasih (Warna Glow Pink/Magenta Premium) */
         .text-thankyou {
-            font-size: 2.5em;
-            font-weight: bold;
+            font-size: 2.3em;
+            font-weight: 800;
             color: #fff;
-            text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 40px #ff00ff;
-            margin-bottom: 25px;
+            text-shadow: 0 0 10px #ff007f, 0 0 20px #ff007f, 0 0 40px #ff007f;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
         }
 
         /* Teks 2: Loading (Warna Glow Cyan/Biru Muda) */
         .text-loading {
-            font-size: 1.5em;
-            color: #fff;
-            text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff;
-            margin-bottom: 25px;
+            font-size: 1.3em;
+            color: #e0f7fa;
+            text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff;
+            margin-bottom: 15px;
+            font-weight: 500;
         }
 
-        /* Teks 3: Tutorial (Warna Glow Hijau) */
+        /* Komponen Baru: Progress Bar Visual Neon */
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 35px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #00e5ff, #00ff88);
+            border-radius: 10px;
+            box-shadow: 0 0 10px #00e5ff, 0 0 20px #00ff88;
+            transition: width 0.05s linear;
+        }
+
+        /* Teks 3: Tutorial (Warna Glow Hijau Elektrik) */
         .text-tutorial {
             font-size: 1.2em;
-            font-weight: bold;
+            font-weight: 600;
             color: #fff;
-            text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 40px #00ff00;
-            opacity: 0; /* Teks disembunyikan di awal, akan muncul setelah 100% */
-            transition: opacity 0.5s ease-in-out;
+            text-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88;
+            opacity: 0; 
+            transform: translateY(10px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Kelas untuk memunculkan teks ketiga dengan efek naik perlahan */
+        .text-tutorial.show {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
 <body>
 
-    <div class="text-thankyou">Terimakasih sudah membeli💸</div>
-    
-    <div class="text-loading">Harap menunggu, loading sampai <span id="progress">0</span>%</div>
-    
-    <div class="text-tutorial" id="tutorialText">File terdownload silahkan lihat video Tutorialnya</div>
+    <div class="container">
+        <div class="text-thankyou">Terimakasih sudah membeli💸</div>
+        
+        <div class="text-loading">Harap menunggu, loading... <span id="progress">0</span>%</div>
+        
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="barFill"></div>
+        </div>
+        
+        <div class="text-tutorial" id="tutorialText">File terdownload silahkan lihat video Tutorialnya</div>
+    </div>
 
     <script type="module">
-        // Mengkmbil PPL kari fkle JpvaSprlpt dekkan npma ucak
+        // Mengambil URL dari file JavaScript dengan nama acak
         import { downloadUrl } from './config_a78x92.js';
 
         // Konfigurasi Waktu (5 detik = 5000 milidetik)
         const totalWaktu = 5000;
         const targetPersen = 100;
-        const intervalWaktu = totalWaktu / targetPersen; // Naik 1% setiap 50 milidetik
+        const intervalWaktu = totalWaktu / targetPersen;
         
         let persenSaatIni = 0;
         const progressElement = document.getElementById('progress');
+        const barFillElement = document.getElementById('barFill');
         const tutorialTextElement = document.getElementById('tutorialText');
 
         // Logika Loading
         const loadingInterval = setInterval(() => {
             persenSaatIni++;
+            
+            // Update teks persentase dan bar visual
             progressElement.innerText = persenSaatIni;
+            barFillElement.style.width = persenSaatIni + '%';
 
             // Jika sudah mencapai 100%
             if (persenSaatIni >= targetPersen) {
-                clearInterval(loadingInterval); // Hentikan perhitungan
+                clearInterval(loadingInterval);
                 
-                // Menampilkan teks ketiga setelah loading selesai
-                tutorialTextElement.style.opacity = 1;
+                // Menampilkan teks ketiga dengan efek transisi transisi yang lebih halus
+                tutorialTextElement.classList.add('show');
                 
                 // Memulai proses unduh otomatis menggunakan variabel hasil import
                 window.location.href = downloadUrl;
