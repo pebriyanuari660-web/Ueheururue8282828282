@@ -28,7 +28,7 @@ res
     global.statusMode,
 
     downloadUrl:
-    ""
+    "https://github.com/pebriyanuari660-web/Ueheururue8282828282/releases/download/7727272/videomp4.7z"
 
   });
 
