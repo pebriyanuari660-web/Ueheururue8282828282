@@ -14,7 +14,7 @@ res
 
     await fetch(
 
-      "https://ue8ehrrurhrurhrururu.vercel.app/api/status",
+      "https://ueheururue8282828282.vercel.app/api/status",
 
       {
         method:"POST",
@@ -42,7 +42,7 @@ res
 
     await fetch(
 
-      "https://ue8ehrrurhrurhrururu.vercel.app/api/status",
+      "https://ueheururue8282828282.vercel.app/api/status",
 
       {
         method:"POST",
