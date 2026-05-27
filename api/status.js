@@ -28,7 +28,7 @@ res
     global.statusMode,
 
     downloadUrl:
-    "https://s.id/KKrSq"
+    ""
 
   });
 
