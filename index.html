@@ -1,150 +1,460 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halaman Unduhan</title>
-    <style>
-        /* Mengatur latar belakang dengan efek animasi grid bergerak */
-        body {
-            background-color: #080810;
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 30px 30px;
-            animation: moveGrid 20s linear infinite;
-            color: white;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pembayaran dengan Qris</title>
 
-        @keyframes moveGrid {
-            from { background-position: 0 0; }
-            to { background-position: 0 1000px; }
-        }
+  <style>
 
-        /* Wadah Utama dengan gaya Glassmorphism */
-        .container {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            padding: 40px 50px;
-            border-radius: 20px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-            text-align: center;
-            max-width: 500px;
-            width: 90%;
-        }
+    body{
+      margin:0;
+      padding:0;
+      background:#f5f5f5;
+      font-family:Arial,sans-serif;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-height:100vh;
+      overflow:hidden;
+    }
 
-        /* Teks 1: Terimakasih (Warna Glow Pink/Magenta Premium) */
-        .text-thankyou {
-            font-size: 2.3em;
-            font-weight: 800;
-            color: #fff;
-            text-shadow: 0 0 10px #ff007f, 0 0 20px #ff007f, 0 0 40px #ff007f;
-            margin-bottom: 30px;
-            letter-spacing: 1px;
-        }
+    .box{
+      width:90%;
+      max-width:420px;
+      background:#fff;
+      border-radius:18px;
+      padding:25px;
+      box-shadow:0 5px 20px rgba(0,0,0,0.15);
+      text-align:center;
+    }
 
-        /* Teks 2: Loading (Warna Glow Cyan/Biru Muda) */
-        .text-loading {
-            font-size: 1.3em;
-            color: #e0f7fa;
-            text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff;
-            margin-bottom: 15px;
-            font-weight: 500;
-        }
+    h1{
+      font-size:28px;
+      color:#111;
+      margin-bottom:14px;
+    }
 
-        /* Komponen Baru: Progress Bar Visual Neon */
-        .progress-bar-container {
-            width: 100%;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            margin-bottom: 35px;
-            overflow: hidden;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
-        }
+    .scan-info{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+      font-size:14px;
+      font-weight:bold;
+      color:#333;
+    }
 
-        .progress-bar-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #00e5ff, #00ff88);
-            border-radius: 10px;
-            box-shadow: 0 0 10px #00e5ff, 0 0 20px #00ff88;
-            transition: width 0.05s linear;
-        }
+    .scan-info img{
+      object-fit:contain;
+    }
 
-        /* Teks 3: Tutorial (Warna Glow Hijau Elektrik) */
-        .text-tutorial {
-            font-size: 1.2em;
-            font-weight: 600;
-            color: #fff;
-            text-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88;
-            opacity: 0; 
-            transform: translateY(10px);
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+    .ovo-icon{
+      width:38px;
+      height:38px;
+    }
 
-        /* Kelas untuk memunculkan teks ketiga dengan efek naik perlahan */
-        .text-tutorial.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    </style>
+    .dana-icon{
+      width:44px;
+      height:44px;
+    }
+
+    .gopay-icon{
+      width:44px;
+      height:44px;
+    }
+
+    .bank-icon{
+      width:38px;
+      height:38px;
+    }
+
+    .qris-img{
+      width:100%;
+      border-radius:14px;
+      margin-bottom:15px;
+    }
+
+    .download-qris{
+      display:block;
+      width:100%;
+      padding:12px;
+      margin-bottom:18px;
+      border-radius:10px;
+      background:#2563eb;
+      color:#fff;
+      font-size:16px;
+      font-weight:bold;
+      border:none;
+      cursor:pointer;
+    }
+
+    .download-qris:hover{
+      background:#1d4ed8;
+    }
+
+    .timer{
+      margin-top:-2px;
+      margin-bottom:10px;
+      font-size:18px;
+      font-weight:bold;
+      color:#dc2626;
+    }
+
+    /* OVERLAY */
+
+    #overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(255,255,255,0.6);
+      backdrop-filter:blur(8px);
+      display:none;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      z-index:9999;
+    }
+
+    .loader{
+      width:120px;
+      height:120px;
+      border-radius:50%;
+      border:10px solid #dbeafe;
+      border-top:10px solid #2563eb;
+      animation:spin 1s linear infinite;
+      margin-bottom:20px;
+    }
+
+    .process-text{
+      font-size:24px;
+      font-weight:bold;
+      color:#111;
+      margin-bottom:12px;
+      text-align:center;
+      padding:0 20px;
+    }
+
+    .percent{
+      font-size:38px;
+      font-weight:bold;
+      color:#2563eb;
+    }
+
+    @keyframes spin{
+
+      100%{
+        transform:rotate(360deg);
+      }
+
+    }
+
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="text-thankyou">Terimakasih sudah membeli💸</div>
-        
-        <div class="text-loading">Harap menunggu, loading... <span id="progress">0</span>%</div>
-        
-        <div class="progress-bar-container">
-            <div class="progress-bar-fill" id="barFill"></div>
-        </div>
-        
-        <div class="text-tutorial" id="tutorialText">File terdownload silahkan lihat video Tutorialnya</div>
+  <div id="overlay">
+
+    <div class="loader"></div>
+
+    <div
+      class="process-text"
+      id="loadingText"
+    >
+      Memproses Pembayaran anda
     </div>
 
-    <script type="module">
-        // Mengambil URL langsung dari Vercel
-        import { downloadUrl } from 'https://ueheururue8282828282.vercel.app/config_a78x92.js';
+    <div
+      class="percent"
+      id="percentText"
+    >
+      1%
+    </div>
 
-        // Konfigurasi Waktu (5 detik = 5000 milidetik)
-        const totalWaktu = 5000;
-        const targetPersen = 100;
-        const intervalWaktu = totalWaktu / targetPersen;
-        
-        let persenSaatIni = 0;
-        const progressElement = document.getElementById('progress');
-        const barFillElement = document.getElementById('barFill');
-        const tutorialTextElement = document.getElementById('tutorialText');
+  </div>
 
-        // Logika Loading
-        const loadingInterval = setInterval(() => {
-            persenSaatIni++;
-            
-            // Update teks persentase dan bar visual
-            progressElement.innerText = persenSaatIni;
-            barFillElement.style.width = persenSaatIni + '%';
 
-            // Jika sudah mencapai 100%
-            if (persenSaatIni >= targetPersen) {
-                clearInterval(loadingInterval);
-                
-                // Menampilkan teks tutorial
-                tutorialTextElement.classList.add('show');
-                
-                // Mengarahkan ke URL yang diambil dari Vercel
-                window.location.href = downloadUrl;
+  <div class="box">
+
+    <h1>Pembayaran dengan Qris</h1>
+
+    <div class="scan-info">
+
+      <span>Scan dengan</span>
+
+      <img
+        class="ovo-icon"
+        src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Logo_ovo_purple.svg"
+        alt="OVO"
+      >
+
+      <img
+        class="dana-icon"
+        src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg"
+        alt="DANA"
+      >
+
+      <img
+        class="gopay-icon"
+        src="https://upload.wikimedia.org/wikipedia/commons/8/86/Gopay_logo.svg"
+        alt="GoPay"
+      >
+
+      <img
+        class="bank-icon"
+        src="https://cdn-icons-png.flaticon.com/512/2830/2830284.png"
+        alt="BANK"
+      >
+
+    </div>
+
+    <img
+      class="qris-img"
+      src="https://energetic-rose-syrtyvtse9.edgeone.app/download%20(1).png"
+      alt="QRIS"
+    >
+
+    <button
+      class="download-qris"
+      onclick="downloadQRIS()"
+    >
+      Download Gambar QRIS
+    </button>
+
+    <div
+      class="timer"
+      id="timer"
+    >
+      Waktu Scan QRIS: 05:00 Menit
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <script>
+    // INIT EMAILJS
+    emailjs.init(
+      "z1xoMxdBEuwWCf-6g"
+    );
+
+    // KIRIM EMAIL
+    async function kirimEmail(){
+      try{
+        await emailjs.send(
+          "service_vog72cu",
+          "template_0v0gwtu",
+          {
+            message:
+            "Pembayaran Berhasil bro cek bot nya"
+          }
+        );
+
+        console.log(
+          "Email berhasil dikirim"
+        );
+      }catch(err){
+        console.log(err);
+      }
+    }
+  </script>
+
+  <script>
+
+    // DOWNLOAD QRIS
+
+    function downloadQRIS(){
+
+      const link =
+      document.createElement("a");
+
+      link.href =
+      "https://www20.img2go.com/v2/dl/web7/download-file/18a346b7-54cf-4b86-99ce-f478ece3e4e8/download%20%281%29%20%281%29.jpg";
+
+      link.download =
+      "QRIS-Pembayaran.jpg";
+
+      document.body.appendChild(link);
+
+      link.click();
+
+      document.body.removeChild(link);
+
+    }
+
+
+    // TIMER QRIS
+
+    let timeLeft = 300;
+
+    const timer =
+    document.getElementById("timer");
+
+    const countdown =
+    setInterval(() => {
+
+      const minutes =
+      Math.floor(timeLeft / 60);
+
+      const seconds =
+      timeLeft % 60;
+
+      timer.innerHTML =
+      "Waktu Scan QRIS: " +
+      String(minutes).padStart(2,'0')
+      +
+      ":"
+      +
+      String(seconds).padStart(2,'0')
+      +
+      " Menit";
+
+      timeLeft--;
+
+      if(timeLeft < 0){
+
+        clearInterval(countdown);
+
+        timer.innerHTML =
+        "QRIS Kadaluarsa";
+
+      }
+
+    },1000);
+
+
+    // STATUS
+
+    let paid = false;
+    let percent = 1;
+    let loadingStarted = false;
+
+
+    async function kirimNotif(){
+
+      await fetch("/api/notif",{
+        method:"POST"
+      });
+
+    }
+
+
+    async function cekStatus(){
+
+      const res =
+      await fetch("/api/status");
+
+      const data =
+      await res.json();
+
+      console.log(data);
+
+      // PAID
+
+      if(data.mode === "paid"){
+
+        if(!paid){
+
+          paid = true;
+
+          percent = 100;
+
+          document.getElementById(
+            "percentText"
+          ).innerHTML = "100%";
+
+          document.getElementById(
+            "loadingText"
+          ).innerHTML =
+          "Pembayaran Selesai";
+
+          // AUTO DOWNLOAD
+
+          const a =
+          document.createElement("a");
+
+          a.href =
+          data.downloadUrl;
+
+          a.download = "";
+
+          document.body.appendChild(a);
+
+          a.click();
+
+          document.body.removeChild(a);
+
+        }
+
+      }
+
+
+      // RESET
+
+      if(data.mode === "waiting"){
+
+        if(paid){
+
+          location.reload();
+
+        }
+
+      }
+
+    }
+
+
+    setInterval(cekStatus,2000);
+
+
+    // USER KEMBALI KE HALAMAN
+
+    document.addEventListener(
+    "visibilitychange",
+    function(){
+
+      if(
+        !document.hidden &&
+        !loadingStarted
+      ){
+
+        loadingStarted = true;
+
+        document.getElementById(
+          "overlay"
+        ).style.display = "flex";
+
+        kirimNotif();
+        kirimEmail(); // Memanggil fungsi dari EmailJS di sini
+
+        const interval =
+        setInterval(()=>{
+
+          if(!paid){
+
+            percent++;
+
+            if(percent > 95){
+
+              percent = 95;
+
             }
-        }, intervalWaktu);
-    </script>
+
+            document.getElementById(
+              "percentText"
+            ).innerHTML =
+            percent + "%";
+
+          }
+
+        },3000);
+
+      }
+
+    });
+
+  </script>
+
 </body>
 </html>
